@@ -1,0 +1,6 @@
+{helloworld.V :: compiled}
+{start :: none}
+{modules [
+    {none},
+]}
+{helloworld}
