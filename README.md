@@ -6,7 +6,7 @@ Var is a simple progrming language that I am creating for fun
 
 The Var compiler/interpreter is used in command line with this command:
 ```bash
-Var <SETUP_FILE>
+Var <Directory>
 ```
 
 ## Prerequisites
