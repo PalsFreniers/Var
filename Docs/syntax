@@ -1,0 +1,97 @@
+requirement :
+file :
+    setup.plsSetup
+    file.plsFile
+the compiler use the setup file to get all the modules that are required
+and the name of the file.plsFile
+the file.plsFile contain the code
+
+setup syntax :
+{file.plsFile :: compiled/interpreted} (set the main file name by commas and if its compiled or interpreted)
+{main :: arguments(optional use none if there is not)} (set the main function) (to pass shell arguments use : #x)
+{modules [
+    {none},
+    {graphics},
+]} (use none if you don't want to use modules)
+{outputFileName} (set the output file compiled mode only)
+
+include files:
+%add "filename"%, (this include the whole file where this command is putted)
+
+function :
+function [name] |args_nbr|
+begin:
+    statements,
+end.
+(to make function)
+`name` = {arg1:arg2} (to call function)
+#x (for arguments)
+(if function are not definne before it is used it will not be any errors)
+(the return value is only returned when the program reachs the end. keyword)
+
+The main function :
+The main function can be called like a regular function and its defined using the main function name set in the setup file
+
+langFunction :
+`exec` = {str} (execute the code into str (like eval in js) available only with interpreted version)
+`cat` = {...} (concatenate many strings (if there is number char or boolean, transforme them in string like : "true" for boolean or "1524" for numbers)
+
+variables : (the variables as only one type : for example if you create an a variable that is an integer, you can't use it to store a string unless you delete it first)
+~create var_name = value, (to create a variable use none to initialise to nothing)
+~create dict_name = {index1; value1#index2; value2}, (use this to create a dictionary (use dictionary as arrays))
+~set var_name = value, (to set a variable)
+~set dict_name|index| = value, (to set a dictionary index value to an other value)
+~add dict_name|index| = value, (to create a new index and add it to the end of the dictionary)
+~delete var_name, (to delete a variable)
+~delete dict_name|index|, (to delete a place in the dictionary and to remove the index (do not try to use the deleted index after this commend without adding a new one)  
+~delete dict_name, (to delete an entier dictionary)
+(be sure to put an underscore before you variables names or to put dict_ for a dictionary)
+
+langVariables :
+§return§, (to return a value the value can be changed and will be return when the end. keyword is reached)
+§in§, (to get a value from the user)
+§streamIn§, (to set the stream to read from (set to §stdin§ to get the standard in else set a filename (it will get the entire filein the string with new line character at the end of each file))
+§stdin§, (standard in pointer)
+§out§, (to print a value)
+§streamOut§, (to set the stream to write to (set to stdout to have the standard console out else give a string))
+§stdout§, (standard out pointer)
+§EXIT_FAILED§, (get the exit failed return code it will return an error that will be printed toi the screen with the line number in interpreter mode) (using only in the main function)
+§EXIT_SUCCESS§, (get the exit success return code) (using only in the main function)
+§VOID§, (the void statement so function can return nothing (§return§ is set to void by default))
+
+condition :
+(condition) |value1:value2| ? \label/, (to jump to a label if a condition between value1 and value2 is true)
+and (v1 and v2) (boolean only)
+or (v1 or v2) (boolean only)
+grt (v1 > v2)
+les (v1 < v2)
+geq (v1 >= v2)
+leq (v1 <= v2)
+equ (v1 == v2)
+eqv (v1 === v2)
+\label/, (label to jump to if the condition is true)
+
+casting value :
+{n/c/s/b}value
+(n for number, c for character, s for string and b for boolean)
+
+algebra operators :
++, (add two number (if booleans it will get true as 1 and false as 0) char or string will retrun an error)
+-, (substraction same as +)
+/, (division same as + without bolleans)
+*, (multiplication same as +)
+%, (modulo same as + without bolleans)
+(), (always put algebras operations in parenteses (and they set the priority)
+
+{[(this is a comment
+and it can be on multiples
+lines.)]}
+
+graphic module :
+    langVariables :
+    §x§, (set the cursor x value (default: 0))
+    §y§, (set the cursor y value (default: 0))
+    §color§, (set the color (default: black))
+    §title§, (set the title of the window set in the beginnig of the main function)
+    §width§, (set the width of the window (default : 600))
+    §height§, (set the height of the window (default : 400))
