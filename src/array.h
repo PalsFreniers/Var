@@ -61,6 +61,7 @@ struct DynamicArray DynamicArray_iter(struct DynamicArray *self, DynamicArray_it
 void DynamicArray_map(struct DynamicArray *self, DynamicArray_map_f func);
 struct DynamicArrayIterator DynamicArray_begin(struct DynamicArray *self);
 struct DynamicArrayIterator DynamicArray_end(struct DynamicArray *self);
+void DynamicArray_push(struct DynamicArray *self, void *data);
 
 // dynamic array iterators
 bool DynamicArrayIterator_equal(struct DynamicArrayIterator self, struct DynamicArrayIterator other);

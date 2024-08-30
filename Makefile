@@ -2,6 +2,7 @@ NAME = Var
 SRCS = src/main.c
 SRCS += src/array.c \
 	src/error.c \
+	src/logger.c \
 	src/strings.c
 OBJS = $(SRCS:.c=.o)
 ID = includes

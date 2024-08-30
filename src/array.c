@@ -70,6 +70,7 @@ void DynamicArray_destruct(struct DynamicArray *self, DynamicArray_delete_f func
         free(self->data);
         self->capacity = 0;
         self->len = 0;
+        self->data = NULL;
 }
 
 // method
@@ -174,6 +175,13 @@ struct DynamicArrayIterator DynamicArray_end(struct DynamicArray *self) {
                 .ptr = self,
                 .index = self->len - 1,
         };
+}
+
+void DynamicArray_push(struct DynamicArray *self, void *data) {
+        dynamicArrayError = DYNAMIC_ARRAY_SUCCESS;
+        if(self->capacity == 0 || self->len == self->capacity) DynamicArray_grow(self);
+        if(dynamicArrayError != DYNAMIC_ARRAY_SUCCESS) return;
+        self->data[self->len++] = data;
 }
 
 void DynamicArray_grow(struct DynamicArray *self) {

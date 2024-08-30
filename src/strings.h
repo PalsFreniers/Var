@@ -80,6 +80,7 @@ void String_map(struct String *self, String_map_f func);
 struct StringIterator String_begin(struct String *self);
 struct StringIterator String_end(struct String *self);
 struct String *String_relocate(struct String *self);
+void String_push(struct String *self, char c);
 
 // strings iterators
 bool StringIterator_equal(struct StringIterator self, struct StringIterator other);

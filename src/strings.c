@@ -207,7 +207,7 @@ struct String String_iter(struct String *self, String_iter_f func) {
         }
         struct String s = String_newWithCapacity(self->len + 1);
         if(stringError != STRING_SUCCESS) return (struct String) {0};
-        for(int i = 0; i < self->len; i++) s.ptr[i] = func(self->ptr[i]);
+        for(u64 i = 0; i < self->len; i++) s.ptr[i] = func(self->ptr[i]);
         s.len = self->len;
         return s;
 }
@@ -257,7 +257,7 @@ void String_map(struct String *self, String_map_f func) {
                 stringError = STRING_EMPTY;
                 return;
         }
-        for(int i = 0; i < self->len; i++) func(self->ptr + i);
+        for(u64 i = 0; i < self->len; i++) func(self->ptr + i);
 }
 
 struct StringIterator String_begin(struct String *self) {
@@ -279,6 +279,17 @@ struct StringIterator String_end(struct String *self) {
                 .ptr = self,
                 .index = self->len - 1,
         };
+}
+
+void String_push(struct String *self, char c) {
+        stringError = STRING_SUCCESS;
+        if(!self->owned) {
+                stringError = STRING_MODIFY_UNOWED;
+                return;
+        }
+        if(self->len == self->capacity) String_grow(self);
+        if(stringError != STRING_SUCCESS) return;
+        self->ptr[self->len++] = c;
 }
 
 void String_grow(struct String *self) {
@@ -350,6 +361,7 @@ str StringError_toCStr() {
         switch(stringError) {
                 case STRING_SUB_STRING_TOO_LONG: return "Sub-String Too Long";
                 case STRING_NO_DESTROY_UNOWNED: return "Unable to destroy unowned String";
+                case STRING_FILE_NOT_FOUNDED: return "File not founded";
                 case STRING_NULL_FUNCTION: return "Passed function pointer is null";
                 case STRING_MODIFY_UNOWED: return "Unable to modify an unowed String";
                 case STRING_MALLOC_FAILED: return "Malloc failure";
@@ -360,7 +372,8 @@ str StringError_toCStr() {
                 case STRING_ITERATOR_INDEX_UNDERFLOW: return "String Iterator underflowed";
                 case STRING_ITERATOR_NULL_STRING: return "String Iterator does not point to any String";
 
-                case STRING_SUCCESS: return "success";
+                case STRING_SUCCESS: return "Success";
+                default: return "Unknown error";
         }
 }
 

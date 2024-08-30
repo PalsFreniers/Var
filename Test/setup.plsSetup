@@ -1,4 +1,4 @@
-{main.plsFile :: compiled}
+{main.plsFile:: compiled}
 {entry :: [
         {none},
 ]}
