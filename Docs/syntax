@@ -55,7 +55,7 @@ langVariables :
 §out§, (to print a value)
 §streamOut§, (to set the stream to write to (set to stdout to have the standard console out else give a string))
 §stdout§, (standard out pointer)
-§EXIT_FAILED§, (get the exit failed return code it will return an error that will be printed toi the screen with the line number in interpreter mode) (using only in the main function)
+§EXIT_FAILURE§, (get the exit failure return code it will return an error that will be printed to the screen with the line number in interpreter mode) (using only in the main function)
 §EXIT_SUCCESS§, (get the exit success return code) (using only in the main function)
 §VOID§, (the void statement so function can return nothing (§return§ is set to void by default))
 
@@ -68,7 +68,6 @@ les (v1 < v2)
 geq (v1 >= v2)
 leq (v1 <= v2)
 equ (v1 == v2)
-eqv (v1 === v2)
 \label/, (label to jump to if the condition is true)
 
 casting value :
@@ -81,7 +80,7 @@ algebra operators :
 /, (division same as + without bolleans)
 *, (multiplication same as +)
 %, (modulo same as + without bolleans)
-(), (always put algebras operations in parenteses (and they set the priority)
+(), (and they set the priority)
 
 {[(this is a comment
 and it can be on multiples

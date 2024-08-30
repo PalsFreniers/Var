@@ -1,0 +1,6 @@
+function [entry] |0|
+begin:
+	§streamOut§ = "test.txt",
+	§out§ = "Hello, World!\n",
+	§return§ = §EXIT_SUCCESS§,
+end.

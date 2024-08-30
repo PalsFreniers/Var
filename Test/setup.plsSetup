@@ -1,0 +1,8 @@
+{main.plsFile :: compiled}
+{entry :: [
+        {none},
+]}
+{modules [
+	{none},
+]}
+{main}

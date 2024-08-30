@@ -1,0 +1,19 @@
+[ ] Lex sources into a data structure (token or else)
+    [ ] Create a data structure to store the lexer token list
+        [x] Create Lexer token Data structure
+        [x] Create Lexer token enumeration
+        [x] Create Lexer token List Data structure
+        [ ] Create functions for all of them
+    [ ] Get character one at a time
+[ ] Parse the data structure into AST (Abstract Syntax Tree)
+    [ ] Create an AST data structure to store the parser AST
+        [ ] Create AsT token data structure
+        [ ] Create AST token enumeration
+        [ ] Create AST data structure
+        [ ] Create functions for all of them
+    [ ] Transform the LTL in AST
+[ ] Compile AST into assembly
+[ ] Optimize the assembly
+[ ] call the assembler
+[ ] use the language to compile itself
+[ ] have fun

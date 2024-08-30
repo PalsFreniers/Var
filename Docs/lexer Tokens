@@ -1,0 +1,23 @@
+WHITE_SPACES : ' ', '\n', '\t', '\v'
+
+OPERATOR : '=', '+', '-', '/', '*', '%',
+           'and', 'or', 'grt', 'les',
+           'geq', 'leq', 'equ', 'eqv',
+           '?', ':', '#', ';'
+
+GROUP_DIVIDER : '()', '[]', '{}', '{[()]}',
+                '§§', '\/', '||', '``', '''', '""',
+
+KEYWORD : 'function', 'begin:', 'end.',
+          '`exec`', '`math`', '`cat`',
+          '~create', '~set', '~add', '~delete',
+          'return', 'in', 'streamIn', 'stdin',
+          'out', 'streamOut', 'stdout',
+          'EXIT_FAILED', 'EXIT_SUCCESS',
+          'n', 'c', 's', 'b',
+          'x', 'y', 'color', 'title', 'width', 'height'
+
+VARIABLE : 'var_', 'dict_'
+
+LITTERALS : STRING[""], CHARACTERS[''], NUMBERS[],
+            BOOLEAN[true/false]
