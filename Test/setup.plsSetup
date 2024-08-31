@@ -1,6 +1,7 @@
 {main.plsFile:: compiled}
 {entry :: [
-        {none},
+        {#1},
+        {"compile"}
 ]}
 {modules [
 	{none},
