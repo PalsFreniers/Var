@@ -2,22 +2,27 @@ NAME = Var
 SRCS = src/main.c
 SRCS += src/array.c \
 	src/error.c \
+	src/setup.c \
+	src/tokens.c \
 	src/logger.c \
 	src/strings.c
-OBJS = $(SRCS:.c=.o)
-ID = includes
-CC = gcc
-LD = gcc
-CFLAGS = -Wall -Wextra -I$(ID) -g -fsanitize=address
+CC = clang
+LD = clang
+CFLAGS = -Wall -Wextra -std=gnu2x -Isrc
 LDFLAGS = 
+
+ifdef DEBUG
+	CFLAGS += -g -fsanitize=address
+endif
+ifdef RELEASE
+	CFLAGS += -Werror -O3
+	LDFLAGS += -flto
+endif
 
 all: $(NAME)
 
-$(NAME): $(OBJS)
-	$(LD) -o $(NAME) $(OBJS) $(CFLAGS) $(LDFLAGS)
-
-%.o: %.c $(HDRS)
-	$(CC) -c $< -o $@ $(CFLAGS)
+$(NAME): $(SRCS)
+	$(LD) -o $(NAME) $(SRCS) $(CFLAGS) $(LDFLAGS)
 
 clean:
 	rm -f $(OBJS)

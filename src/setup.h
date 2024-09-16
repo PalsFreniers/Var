@@ -27,5 +27,6 @@ struct Setup {
 };
 
 struct String findSetup();
+struct Setup parseSetup(struct String file);
 
 #endif // SETUP_H

@@ -1,14 +1,8 @@
 #include "strings.h"
-#include "array.h"
-#include "logger.h"
 #include "error_code.h"
 #include <limits.h>
 #include <stdint.h>
-#include <stdio.h>
 #include <unistd.h>
-#include <string.h>
-#include <stdlib.h>
-#include <ctype.h>
 #include "setup.h"
 
 

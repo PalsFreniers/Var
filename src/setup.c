@@ -4,6 +4,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <ctype.h>
+#include <limits.h>
 #include "tokens.h"
 
 struct String findSetup() {
@@ -323,6 +325,6 @@ struct Setup parseSetup(struct String file) {
 errRet:
         setupFree(&s);
 ret:
-        DynamicArray_destruct(&arr, (DynamicArray_delete_f)tokenFree);
+        DynamicArray_destruct(&arr, (DynamicArray_delete_f)setupTokenFree);
         return s;
 }

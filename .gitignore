@@ -2,3 +2,5 @@ compile_commands.json
 Var
 .*.swp
 *.o
+.direnv
+*.lock
