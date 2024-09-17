@@ -12,5 +12,6 @@ int main() {
         struct Setup setup = parseSetup(setupF);
         String_destruct(&setupF);
         if(!setup.valid) return INVALID_SETUP;
+        setupFree(&setup);
         return SUCCESS_CODE;
 }

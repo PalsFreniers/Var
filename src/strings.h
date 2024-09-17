@@ -1,9 +1,7 @@
 #ifndef STRINGS_H
 #define STRINGS_H
 
-#include <stdbool.h>
 #include "types.h"
-#include "array.h"
 
 #define DEFAULT_STRING_CAPACITY 1024
 #define String_zero() (struct String) {0}

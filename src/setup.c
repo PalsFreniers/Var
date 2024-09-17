@@ -6,7 +6,10 @@
 #include <unistd.h>
 #include <ctype.h>
 #include <limits.h>
+#include "strings.h"
 #include "tokens.h"
+#include <stdio.h>
+#include "array.h"
 
 struct String findSetup() {
         char *pwd = getcwd(NULL, 0);
@@ -259,14 +262,14 @@ void setupParseError(char *fmt) {
 }
 
 void setupParseErrorUnexpectedToken(enum SetupToken t1, enum SetupToken t2) {
-        log_error("Error during setup parsing : Unexpected token `%s` (expected `%s`)", getSetupTokens(t1), getSetupTokens(t2));
+        log_error("Error during setup parsing : Unexpected token `%s` (expected `%s`)\n", getSetupTokens(t1), getSetupTokens(t2));
 }
 
 void setupFree(struct Setup *self) {
         if(self->arguments) {
                 for(int i = 0; self->arguments[i].type != ST_END; i++) setupTokenFree(&(self->arguments[i]));
                 free(self->arguments);
-        }
+       }
         if(self->modules) {
                 for(int i = 0; self->modules[i] != NULL; i++) free(self->modules);
                 free(self->modules);
@@ -300,7 +303,19 @@ bool parseSetupSource(struct DynamicArrayIterator *iter, struct Setup *setup) {
                 goto end;
         }
         if(!strsuffix(curr->value.s, ".plsFile")) {
-                setupParseError("file does not have extension `.plsFile`");
+                setupParseError("file does not have extension `.plsFile`\n");
+                ret = false;
+                goto end;
+        }
+        setup->source = String_newFromFile(curr->value.s);
+        if(stringError != STRING_SUCCESS) {
+                setupParseError(StringError_toCStr());
+                ret = false;
+                goto end;
+        }
+        curr = DynamicArrayIterator_next(iter);
+        if(dynamicArrayError != DYNAMIC_ARRAY_SUCCESS || curr->type != ST_COLON) {
+                setupParseErrorUnexpectedToken(curr->type, ST_COLON);
                 ret = false;
                 goto end;
         }
@@ -310,7 +325,65 @@ bool parseSetupSource(struct DynamicArrayIterator *iter, struct Setup *setup) {
                 ret = false;
                 goto end;
         }
+        bool compiled = strcmp(curr->value.s, "compiled") == 0; 
+        bool interpreted = strcmp(curr->value.s, "interpreted") == 0;
+        if(!compiled && !interpreted) {
+                setupParseError("Unable to find output type : `");
+                fprintf(stderr, "%s` expected `compiled` or `interpreted`\n", curr->value.s);
+                ret = false;
+                goto end;
+        }
+        setup->compiled = compiled;
+        curr = DynamicArrayIterator_next(iter);
+        if(dynamicArrayError != DYNAMIC_ARRAY_SUCCESS || curr->type != ST_BRACKET_CLOSE) {
+                setupParseErrorUnexpectedToken(curr->type, ST_BRACKET_CLOSE);
+                ret = false;
+                goto end;
+        }
+end:
+        return ret;
+}
 
+bool parseSetupOutput(struct DynamicArrayIterator *iter, struct Setup *setup) {
+        bool ret = true;
+        struct Token *curr = DynamicArrayIterator_next(iter);
+        if(dynamicArrayError != DYNAMIC_ARRAY_SUCCESS || curr->type != ST_BRACKET_OPEN) {
+                setupParseErrorUnexpectedToken(curr->type, ST_BRACKET_OPEN);
+                ret = false;
+                goto end;
+        }
+        curr = DynamicArrayIterator_next(iter);
+        if(dynamicArrayError != DYNAMIC_ARRAY_SUCCESS || curr->type != ST_IDENTIFIER) {
+                setupParseErrorUnexpectedToken(curr->type, ST_IDENTIFIER);
+                ret = false;
+                goto end;
+        }
+        if(strcmp(curr->value.s, "output") != 0) {
+                setupParseError("expected keyword `output` but got ");
+                fprintf(stderr, "`%s`", curr->value.s);
+                ret = false;
+                goto end;
+        }
+        curr = DynamicArrayIterator_next(iter);
+        if(dynamicArrayError != DYNAMIC_ARRAY_SUCCESS || curr->type != ST_COLON) {
+                setupParseErrorUnexpectedToken(curr->type, ST_COLON);
+                ret = false;
+                goto end;
+        }
+        curr = DynamicArrayIterator_next(iter);
+        if(dynamicArrayError != DYNAMIC_ARRAY_SUCCESS || curr->type != ST_IDENTIFIER) {
+                setupParseErrorUnexpectedToken(curr->type, ST_IDENTIFIER);
+                ret = false;
+                goto end;
+        }
+        setup->output = strdup(curr->value.s);
+        curr = DynamicArrayIterator_next(iter);
+        if(dynamicArrayError != DYNAMIC_ARRAY_SUCCESS || curr->type != ST_BRACKET_CLOSE) {
+                if(dynamicArrayError == DYNAMIC_ARRAY_ITERATOR_INDEX_OVERFLOW && curr->type == ST_BRACKET_CLOSE) goto end;
+                setupParseErrorUnexpectedToken(curr->type, ST_BRACKET_CLOSE);
+                ret = false;
+                goto end;
+        }
 end:
         return ret;
 }
@@ -321,6 +394,8 @@ struct Setup parseSetup(struct String file) {
         struct DynamicArrayIterator iter = DynamicArray_begin(&arr);
         struct Setup s = {0};
         if(!parseSetupSource(&iter, &s)) goto errRet;
+        if(!parseSetupOutput(&iter, &s)) goto errRet;
+        s.valid = true;
         goto ret;
 errRet:
         setupFree(&s);

@@ -2,7 +2,6 @@
 #define DYNAMIC_ARRAY_H
 
 #include "types.h"
-#include <stdbool.h>
 
 #define DEFAULT_DYNAMIC_ARRAY_CAPACITY 1024
 #define DynamicArray_zero() (struct DynamicArray) {0}

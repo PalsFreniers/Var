@@ -1,9 +1,2 @@
 {main.plsFile :: compiled}
-{entry :: [
-        {#1},
-        {"compile"}
-]}
-{modules [
-	{none},
-]}
-{main}
+{output :: main}

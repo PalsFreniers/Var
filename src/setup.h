@@ -28,5 +28,6 @@ struct Setup {
 
 struct String findSetup();
 struct Setup parseSetup(struct String file);
+void setupFree(struct Setup *self);
 
 #endif // SETUP_H

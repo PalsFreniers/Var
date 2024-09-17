@@ -207,7 +207,7 @@ void *DynamicArrayIterator_next(struct DynamicArrayIterator *self) {
                 return 0;
         }
         DynamicArrayIterator_inc(self);
-        return dynamicArrayError == DYNAMIC_ARRAY_SUCCESS ? self->ptr->data[self->index] : 0;
+        return dynamicArrayError == DYNAMIC_ARRAY_SUCCESS ? self->ptr->data[self->index - 1] : self->ptr->data[self->ptr->len - 1];
 }
 
 void *DynamicArrayIterator_peek(struct DynamicArrayIterator *self) {
